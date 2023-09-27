@@ -316,7 +316,7 @@ return [
             'icon_color' => 'white',
             'url'        => 'workers',
         ],
-       
+
     ],
 
     /*
@@ -395,7 +395,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js',
+                    'location' => '//cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js',
                 ],
                 [
                     'type' => 'js',
@@ -415,22 +415,43 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js',
+                    'location' => '//cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js',
                 ],
+                // [
+                //     'type' => 'js',
+                //     'asset' => true,
+                //     'location' => '//cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.16/b-1.4.2/b-html5-1.4.2/datatables.min.js',
+                // ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css',
                 ],
                 [
                     'type' => 'css',
                     'asset' => true,
                     'location' => '//cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css',
+                ],
+
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap4.min.css',
                 ],
             ],
         ],
@@ -517,5 +538,5 @@ return [
     */
 
     'livewire' => false,
-   
+
 ];
