@@ -18,10 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
-Route::get('/workers',[WorkerController::class,'workerList'])->name('workers');
 //workers
-Route::get('popup-details/{type}',[WorkerController::class,'popupDetails']);
-Route::post('add-edit-worker',[WorkerController::class,'addEditWorker']);
-Route::get('edit-worker/{id}',[WorkerController::class,'editWorker']);
-Route::get('worker-list',[WorkerController::class,'workerList']);
-Route::get('worker-delete/{id}',[WorkerController::class,'workerDelete']);
+Route::get('/workers', function () {
+    return view('workers');
+})->name('workers');
+
+Route::get('popup-details/{type}', [WorkerController::class, 'popupDetails']);
+Route::post('add-edit-worker', [WorkerController::class, 'addEditWorker']);
+Route::get('edit-worker/{id}', [WorkerController::class, 'editWorker']);
+Route::get('worker-list', [WorkerController::class, 'workerList']);
+Route::get('worker-delete/{id}', [WorkerController::class, 'workerDelete']);
