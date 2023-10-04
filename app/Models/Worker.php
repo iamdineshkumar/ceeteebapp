@@ -17,4 +17,7 @@ class Worker extends Model
     public function contractor(){
         return $this->belongsTo(ContractorMaster::class);
     }
+    public function docs(){
+        return $this->hasMany(WorkersDocs::class,'workerId');
+    }
 }

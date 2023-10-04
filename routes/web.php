@@ -26,5 +26,12 @@ Route::get('/workers', function () {
 Route::get('popup-details/{type}', [WorkerController::class, 'popupDetails']);
 Route::post('add-edit-worker', [WorkerController::class, 'addEditWorker']);
 Route::get('edit-worker/{id}', [WorkerController::class, 'editWorker']);
+Route::get('edit-document/{id}', [WorkerController::class, 'editDocument']);
+Route::get('docs-worker/{id}', [WorkerController::class, 'docsWorker']);
+Route::get('docs-view-worker/{id}', [WorkerController::class, 'docsviewWorker']);
+Route::get('worker-view/{id}', [WorkerController::class, 'viewWorker']);
+Route::post('add-docs', [WorkerController::class, 'addDocs']);
+Route::post('edit-docs', [WorkerController::class, 'editDocs']);
 Route::get('worker-list', [WorkerController::class, 'workerList']);
 Route::get('worker-delete/{id}', [WorkerController::class, 'workerDelete']);
+Route::get('document-delete/{id}', [WorkerController::class, 'documentDelete']);

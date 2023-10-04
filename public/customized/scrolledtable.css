@@ -1,0 +1,23 @@
+/* .tab-content
+{
+
+   max-height: 350px !important;
+
+} */
+.pull-left{float:left!important;}
+.pull-right{float:right!important;}
+
+.sticky-head
+{
+position: sticky;
+inset-block-start: 37px;
+background-color: grey;
+color: white;
+}
+.sticky-foot
+{
+position: sticky;
+inset-block-end: 0;
+background-color: grey;
+color: white;
+}
