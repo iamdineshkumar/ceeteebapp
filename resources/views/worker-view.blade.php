@@ -280,7 +280,7 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="remarks">Remarks</label>
-                            <textarea class="form-control" name="remarks" id="remarks" aria-describedby="remarks"> </textarea>
+                            <input class="form-control" type="text" name="remarks" id="remarks" >
                         </div>
                     </div>
                 </div>
