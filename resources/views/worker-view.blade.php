@@ -43,7 +43,21 @@
 
 @include('../header')
 <div class="content-wrapper">
-
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>View Worker</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active">Worker Management</li>
+                        <li class="breadcrumb-item active">View Worker</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -108,9 +122,12 @@
                     <div class="form-group">
                         <label for="gender">Gender</label>
                         <select name='gender' class="form-control" id='gender' required disabled>
-                            <option {{ $worker_docs[0]->gender == '1' ? 'Selected' : '' }} value="1">Male</option>
-                            <option {{ $worker_docs[0]->gender == '2' ? 'Selected' : '' }} value="2">Female</option>
-                            <option {{ $worker_docs[0]->gender == '3' ? 'Selected' : '' }} value="3">Other</option>
+                            <option {{ $worker_docs[0]->gender == '1' ? 'Selected' : '' }} value="1">Male
+                            </option>
+                            <option {{ $worker_docs[0]->gender == '2' ? 'Selected' : '' }} value="2">Female
+                            </option>
+                            <option {{ $worker_docs[0]->gender == '3' ? 'Selected' : '' }} value="3">Other
+                            </option>
                         </select>
                     </div>
 
@@ -121,10 +138,12 @@
                         <select name='id_proof_type' class="form-control" id='id_proof' required disabled>
                             <option value="aadhar" {{ $worker_docs[0]->id_proof_type == 'aadhar' ? 'Selected' : '' }}>
                                 Aadhar</option>
-                            <option {{ $worker_docs[0]->id_proof_type == 'voterId' ? 'Selected' : '' }} value="voterId">
+                            <option {{ $worker_docs[0]->id_proof_type == 'voterId' ? 'Selected' : '' }}
+                                value="voterId">
                                 Voter Id
                             </option>
-                            <option {{ $worker_docs[0]->id_proof_type == 'panCard' ? 'Selected' : '' }} value="panCard">Pan
+                            <option {{ $worker_docs[0]->id_proof_type == 'panCard' ? 'Selected' : '' }}
+                                value="panCard">Pan
                                 Card
                             </option>
                         </select>
