@@ -17,26 +17,22 @@ class WorkerController extends Controller
     public function workerList()
     {
         $workers = Worker::with('company', 'branch', 'contractor')->get();
-        return view('workers-list', compact('workers'));
+        return view('workers/workers-list', compact('workers'));
     }
 
-    public function popupDetails($type)
+    public function addWorker()
     {
-        switch ($type) {
-            case 'Worker':
 
-                $companies = Company::select('Company_ID', 'Company_Name')->get();
-                $branches = Branch::select('Branch_ID', 'BranchName', 'Company_ID')->get();
-                $contractors = ContractorMaster::select('id', 'Contractor_Name')->get();
-                // $mesthiries = Mesthiry::select('id','name')->get();
-                $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
+        $companies = Company::select('Company_ID', 'Company_Name')->get();
+        $branches = Branch::select('Branch_ID', 'BranchName', 'Company_ID')->get();
+        $contractors = ContractorMaster::select('id', 'Contractor_Name')->get();
+        // $mesthiries = Mesthiry::select('id','name')->get();
+        $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
 
-                // $workunits = Workunit::select('id','name')->get();
-                $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
-
-                return view('worker-form', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits'));
-                break;
-        }
+        // $workunits = Workunit::select('id','name')->get();
+        $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
+        $formType = 'Add';
+        return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits'));
     }
 
     //workers
@@ -69,6 +65,7 @@ class WorkerController extends Controller
             'mesthiry_id'            => 'required',
             'work_unit'          => 'required'
         ]);
+
 
         if ($validator->fails()) {
 
@@ -104,26 +101,51 @@ class WorkerController extends Controller
 
         $worker->save();
 
+
+        if (!empty($request->documents)) {
+            $id = $worker->id;
+            foreach ($request->documents as $key => $document) {
+                $worker_docs = new WorkersDocs();
+
+                $docName = $id . '-' . time() . '-' . str_replace(' ', '-', $document->getClientOriginalName());
+                $worker_docs->doc_name = $id . '-' . time() . '-' . str_replace(' ', '-', $document->getClientOriginalName());
+                if (in_array($document->extension(), ['doc', 'docx', 'pdf', 'png', 'jpeg', 'xlsx', 'txt']))
+                    $worker_docs->doc_type = 'Document';
+                if (in_array($document->extension(), ['mp3', 'm4a', 'wav']))
+                    $worker_docs->doc_type = 'Audio';
+                if (in_array($document->extension(), ['mp4', 'wma', 'avi']))
+                    $worker_docs->doc_type = 'Video';
+                $worker_docs->workerId = $id;
+                $document->move(public_path('upload/worker/'), $docName);
+
+                $worker_docs->doc_location = 'upload/worker/' . $docName;
+                $worker_docs->save();
+            }
+        }
+
+
         return response()->json([
             'status'       => 1,
-            'message'      => $message,
-            'callFunction' => 'fetchWorkerList();'
+            'message'      => $message
         ]);
     }
-    public function workerDelete($id)
+    public function workerDelete(Request $request)
     {
-        $worker = Worker::find($id);
+        $worker = Worker::find($request->workerid);
         if ($worker) {
+            $docs = Worker::with('docs')->whereId($request->workerid)->get();
+            foreach ($docs[0]->docs as $doc) {
+                $worker_docs = WorkersDocs::find($doc->id);
+                if (file_exists(public_path($worker_docs->doc_location))) {
+                    unlink(public_path($worker_docs->doc_location));
+                }
+                $worker_docs->delete();
+            }
+
             $worker->delete();
-            return response()->json([
-                'status'       => 1,
-                'message'      => "Worker deleted successfully"
-            ]);
+            return back()->with('message', 'Worker Deleted Successfully');
         } else {
-            return response()->json([
-                'status'       => 0,
-                'message'      => "Something went wrong"
-            ]);
+            return back()->withErrors("Something went wrong while deleting Worker");
         }
     }
     public function editWorker($id)
@@ -137,7 +159,8 @@ class WorkerController extends Controller
             $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
             // $workunits = Workunit::select('id','name')->get();
             $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
-            return view('worker-form', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker'));
+            $formType = 'Edit';
+            return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker'));
         } else {
             return response()->json([
                 'status'       => 0,
@@ -145,18 +168,7 @@ class WorkerController extends Controller
             ]);
         }
     }
-    public function editDocument($id)
-    {
-        $worker_docs = WorkersDocs::find($id);
-        if ($worker_docs) {
-            return view('worker-doc-form', compact('worker_docs'));
-        } else {
-            return response()->json([
-                'status'       => 0,
-                'message'      => "Something went wrong"
-            ]);
-        }
-    }
+
     public function viewWorker($id)
     {
         $companies = Company::select('Company_ID', 'Company_Name')->get();
@@ -168,67 +180,16 @@ class WorkerController extends Controller
         $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
         $worker_docs = Worker::with('company', 'branch', 'contractor', 'docs')->whereId($id)->get();
         if ($worker_docs) {
-            return view('worker-view', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker_docs'));
+            return view('workers/worker-view', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker_docs'));
         } else {
-            return response()->json([
-                'status'       => 0,
-                'message'      => "Something went wrong"
-            ]);
+            return back()->withErrors("Something went wrong");
         }
-    }
-    public function editDocs(Request $request)
-    {
-        $worker_docs = new WorkersDocs();
-        $message = " Document added successfully";
-        if ($request->doc_id) {
-            $worker_docs = WorkersDocs::find($request->doc_id);
-
-            $message = "Document updated successfully";
-        }
-        $validator = Validator::make($request->all(), [
-            'worker_id' => 'required',
-            'doc_name'         => 'required',
-        ]);
-
-        if ($validator->fails()) {
-
-            return response()->json([
-                'status'  => 0,
-                'message' => $validator->errors(),
-            ]);
-        }
-
-        $worker_docs->doc_name = $request->doc_name;
-        $worker_docs->workerId = $request->worker_id;
-        $worker_docs->remarks = $request->remarks;
-
-        if (!empty($request->document)) {
-            if (file_exists(public_path($worker_docs->doc_location))) {
-                unlink(public_path($worker_docs->doc_location));
-            }
-            $docName = time() . '.' . $request->document->extension();
-            $worker_docs->doc_type = $request->document->extension();
-            $request->document->move(public_path('documents_workers'), $docName);
-
-            $worker_docs->doc_location = 'documents_workers/' . $docName;
-        }
-
-
-        $worker_docs->save();
-
-        return response()->json([
-            'status'       => 1,
-            'message'      => $message,
-            'callFunction' => 'fetchWorkerList();'
-        ]);
     }
     public function addDocs(Request $request)
     {
         $worker_docs = new WorkersDocs();
         $validator = Validator::make($request->all(), [
-            'worker_id' => 'required',
-            'doc_name'         => 'required',
-            'document'            => 'required',
+            'documents'            => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -238,56 +199,51 @@ class WorkerController extends Controller
                 'message' => $validator->errors(),
             ]);
         }
+        if (!empty($request->documents)) {
+            $id = $request->worker_id;
+            foreach ($request->documents as $document) {
+                $worker_docs = new WorkersDocs();
 
+                $docName = $id . '-' . time() . '-' . str_replace(' ', '-', $document->getClientOriginalName());
+                $worker_docs->doc_name = $id . '-' . time() . '-' . str_replace(' ', '-', $document->getClientOriginalName());
+                if (in_array($document->extension(), ['doc', 'docx', 'pdf', 'png', 'jpeg', 'xlsx', 'txt']))
+                    $worker_docs->doc_type = 'Document';
+                if (in_array($document->extension(), ['mp3', 'm4a', 'wav']))
+                    $worker_docs->doc_type = 'Audio';
+                if (in_array($document->extension(), ['mp4', 'wma', 'avi']))
+                    $worker_docs->doc_type = 'Video';
+                $worker_docs->workerId = $id;
+                $document->move(public_path('upload/worker/'), $docName);
 
-
-        $worker_docs->doc_name = $request->doc_name;
-        $worker_docs->workerId = $request->worker_id;
-        $worker_docs->remarks = $request->remarks;
-
-        if (!empty($request->document)) {
-            $docName = time() . '.' . $request->document->extension();
-            $worker_docs->doc_type = $request->document->extension();
-            $request->document->move(public_path('documents_workers'), $docName);
-
-            $worker_docs->doc_location = 'documents_workers/' . $docName;
+                $worker_docs->doc_location = 'upload/worker/' . $docName;
+                $worker_docs->save();
+            }
         }
 
 
-        $worker_docs->save();
-
         return back()->with('message', 'Document Added Successfully');
     }
-    public function documentDelete($id)
+    public function documentDelete(Request $request)
     {
-        $worker_docs = WorkersDocs::find($id);
+        $worker_docs = WorkersDocs::find($request->docid);
         if ($worker_docs) {
             if (file_exists(public_path($worker_docs->doc_location))) {
                 unlink(public_path($worker_docs->doc_location));
             }
             $worker_docs->delete();
 
-            return response()->json([
-                'status'       => 1,
-                'message'      => "Document deleted successfully"
-            ]);
+            return back()->with('message', 'Document Deleted Successfully');
         } else {
-            return response()->json([
-                'status'       => 0,
-                'message'      => "Something went wrong"
-            ]);
+            return back()->withErrors("Something went wrong while deleting Document");
         }
     }
     public function docsWorker($id)
     {
         $worker = Worker::find($id);
         if ($worker) {
-            return view('worker-doc-form', compact('worker'));
+            return view('workers/worker-doc-form', compact('worker'));
         } else {
-            return response()->json([
-                'status'       => 0,
-                'message'      => "Something went wrong"
-            ]);
+            return back()->withErrors("Something went wrong");
         }
     }
 }

@@ -20,10 +20,10 @@ Route::get('/', function () {
 })->name('welcome');
 //workers
 Route::get('/workers', function () {
-    return view('workers');
+    return view('workers/workers');
 })->name('workers');
 
-Route::get('popup-details/{type}', [WorkerController::class, 'popupDetails']);
+Route::get('add-worker', [WorkerController::class, 'addWorker']);
 Route::post('add-edit-worker', [WorkerController::class, 'addEditWorker']);
 Route::get('edit-worker/{id}', [WorkerController::class, 'editWorker']);
 Route::get('edit-document/{id}', [WorkerController::class, 'editDocument']);
@@ -34,4 +34,6 @@ Route::post('add-docs', [WorkerController::class, 'addDocs']);
 Route::post('edit-docs', [WorkerController::class, 'editDocs']);
 Route::get('worker-list', [WorkerController::class, 'workerList']);
 Route::get('worker-delete/{id}', [WorkerController::class, 'workerDelete']);
+Route::post('worker-delete', [WorkerController::class, 'workerDelete']);
 Route::get('document-delete/{id}', [WorkerController::class, 'documentDelete']);
+Route::post('document-delete', [WorkerController::class, 'documentDelete']);
