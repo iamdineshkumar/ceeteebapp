@@ -161,14 +161,10 @@
                     <div class="form-group">
                         <label for="labour_classification">Labour Classification</label>
 
-                        <select name='labour_classification' class="form-control" id='labour_classification' required
-                            disabled>
-                            <option {{ $worker_docs[0]->labour_classification == 'local' ? 'Selected' : '' }}
-                                value="local">Local
-                            </option>
-                            <option {{ $worker_docs[0]->labour_classification == 'others' ? 'Selected' : '' }}
-                                value="others">Others
-                            </option>
+                        <select name="labour_classification" id="labour_classification" class='form-control' required disabled>
+                            <option value="{{ $worker_docs[0]->labour->Category_Name }}">
+                                {{ $worker_docs[0]->labour->Category_Name }}</option>
+
                         </select>
                     </div>
                 </div>

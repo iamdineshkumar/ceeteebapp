@@ -7,6 +7,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\ContractorMaster;
+use App\Models\Contractor_Category;
 use App\Models\Worker;
 use App\Models\WorkersDocs;
 
@@ -16,7 +17,9 @@ class WorkerController extends Controller
 
     public function workerList()
     {
-        $workers = Worker::with('company', 'branch', 'contractor')->get();
+        $workers = Worker::with('company', 'branch', 'contractor','labour')->get();
+        // print_r($workers);
+        // exit;
         return view('workers/workers-list', compact('workers'));
     }
 
@@ -26,13 +29,13 @@ class WorkerController extends Controller
         $companies = Company::select('Company_ID', 'Company_Name')->get();
         $branches = Branch::select('Branch_ID', 'BranchName', 'Company_ID')->get();
         $contractors = ContractorMaster::select('id', 'Contractor_Name')->get();
+        $labourClassification = Contractor_Category::select('Category_ID', 'Category_Name')->get();
         // $mesthiries = Mesthiry::select('id','name')->get();
         $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
-
         // $workunits = Workunit::select('id','name')->get();
         $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
         $formType = 'Add';
-        return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits'));
+        return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits','labourClassification'));
     }
 
     //workers
@@ -50,7 +53,6 @@ class WorkerController extends Controller
             'dob'            => 'required',
             'address'        => 'required',
             'mobile'         => 'required|digits:10',
-            'email'          => 'required|email|unique:workers,email,' . $worker->id,
             'company_id'    => 'required',
             'branch_id'     => 'required',
             'id_proof_type'            => 'required',
@@ -97,6 +99,8 @@ class WorkerController extends Controller
         $worker->mesthiry_id = $request->mesthiry_id;
         $worker->work_unit = $request->work_unit;
         $worker->remarks = $request->remarks;
+        $worker->status = 1;
+        $worker->active = 0;
 
 
         $worker->save();
@@ -155,12 +159,13 @@ class WorkerController extends Controller
             $companies = Company::select('Company_ID', 'Company_Name')->get();
             $branches = Branch::select('Branch_ID', 'BranchName', 'Company_ID')->get();
             $contractors = ContractorMaster::select('id', 'Contractor_Name')->get();
+            $labourClassification = Contractor_Category::select('Category_ID', 'Category_Name')->get();
             // $mesthiries = Mesthiry::select('id','name')->get();
             $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
             // $workunits = Workunit::select('id','name')->get();
             $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
             $formType = 'Edit';
-            return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker'));
+            return view('workers/worker-form', compact('formType', 'companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker','labourClassification'));
         } else {
             return response()->json([
                 'status'       => 0,
@@ -174,13 +179,14 @@ class WorkerController extends Controller
         $companies = Company::select('Company_ID', 'Company_Name')->get();
         $branches = Branch::select('Branch_ID', 'BranchName', 'Company_ID')->get();
         $contractors = ContractorMaster::select('id', 'Contractor_Name')->get();
+        $labourClassification = Contractor_Category::select('Category_ID', 'Category_Name')->get();
         // $mesthiries = Mesthiry::select('id','name')->get();
         $mesthiries[] = ['id' => 1, 'name' => 'testMesthiry'];
         // $workunits = Workunit::select('id','name')->get();
         $workunits[] = ['id' => 1, 'name' => 'testWorkunit'];
         $worker_docs = Worker::with('company', 'branch', 'contractor', 'docs')->whereId($id)->get();
         if ($worker_docs) {
-            return view('workers/worker-view', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker_docs'));
+            return view('workers/worker-view', compact('companies', 'branches', 'contractors', 'mesthiries', 'workunits', 'worker_docs','labourClassification'));
         } else {
             return back()->withErrors("Something went wrong");
         }

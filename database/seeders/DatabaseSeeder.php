@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use App\Models\ContractorMaster;
 use App\Models\Company;
 use App\Models\Branch;
+use App\Models\contractor;
+use App\Models\Contractor_Category;
 
 class DatabaseSeeder extends Seeder
 {
@@ -442,6 +444,96 @@ class DatabaseSeeder extends Seeder
                     'branch_logo'=>'',
                     'branch_details'=>'C K Financiers'
                     ] );
+                    Contractor_Category::create( [
+                        'Category_ID'=>'CC001',
+                        'Category_Name'=>'Earth Worker',
+                        'Print Name'=>'Earth Worker',
+                        'Description'=>'Earth Worker'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC002',
+                        'Category_Name'=>'Plumbing',
+                        'Print Name'=>'Plumbing',
+                        'Description'=>'Plumbing'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC003',
+                        'Category_Name'=>'Electrical',
+                        'Print Name'=>'Electrical',
+                        'Description'=>'Electrical'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC004',
+                        'Category_Name'=>'Mason',
+                        'Print Name'=>'Mason',
+                        'Description'=>'Mason'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC005',
+                        'Category_Name'=>'Carpenter',
+                        'Print Name'=>'Carpenter',
+                        'Description'=>'Carpenter'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC006',
+                        'Category_Name'=>'Painting',
+                        'Print Name'=>'Painting',
+                        'Description'=>'Painting'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC007',
+                        'Category_Name'=>'Fero Work',
+                        'Print Name'=>'Fero Work',
+                        'Description'=>'Fero Work'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC008',
+                        'Category_Name'=>'Sub-Contractor',
+                        'Print Name'=>'Sub-Contractor',
+                        'Description'=>'Sub-Contractor'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC009',
+                        'Category_Name'=>'Full-Contractor',
+                        'Print Name'=>'Full-Contractor',
+                        'Description'=>'Full-Contractor'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC010',
+                        'Category_Name'=>'JCB Operator',
+                        'Print Name'=>'JCB Operator',
+                        'Description'=>'JCB Operator'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC011',
+                        'Category_Name'=>'Tipper',
+                        'Print Name'=>'Tipper',
+                        'Description'=>'Tipper'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC012',
+                        'Category_Name'=>'Others',
+                        'Print Name'=>'Others',
+                        'Description'=>'Others'
+                        ] );
+                                    
+                        Contractor_Category::create( [
+                        'Category_ID'=>'CC013',
+                        'Category_Name'=>'Vasthu',
+                        'Print Name'=>'Vasthu',
+                        'Description'=>'Vasthu Consultant'
+                        ] );
         
     }
 }

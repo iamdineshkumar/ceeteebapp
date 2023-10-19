@@ -22,12 +22,13 @@ return new class extends Migration
             $table->string('name', 100);
             $table->text('address');
             $table->string('mobile');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->date('dob');
             $table->tinyInteger('gender')->comment('1-Male;2-Female;3-Other');
             $table->text('id_proof_type');
             $table->text('id_proof_no');
-            $table->text('labour_classification');
+            $table->string('labour_classification');
+            $table->foreign('labour_classification')->references('Category_ID')->on('contractor_category')->onDelete('cascade');
             $table->text('bank_account_no');
             $table->text('bank_account_holder_name');
             $table->text('ifsc');
@@ -40,6 +41,12 @@ return new class extends Migration
             $table->Integer('work_unit')->unsigned();
             //$table->foreign('work_unit')->references('id')->on('work_unit')->onDelete('cascade');
             $table->text('remarks')->nullable();
+            $table->tinyInteger('status')->comment('1-Open;2-Cancelled;3-Approved;4-Hold');
+            $table->text('statusRemarks')->nullable();
+            $table->timestamp('statusDate')->nullable();
+            $table->integer('statusDoneBy')->nullable();
+            // $table->foreign('statusDoneBy')->references('id')->on('ceetee_user_creation')->onDelete('cascade')->nullable();
+            $table->boolean('active');
             $table->timestamps();
         });
     }

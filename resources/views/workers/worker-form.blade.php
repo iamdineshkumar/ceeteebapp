@@ -62,7 +62,7 @@
         <div class="card-body">
             <form id="addeditform" action="{{ url('add-edit-worker') }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header bg-info ">
                                 Basic Details
@@ -70,7 +70,7 @@
                             <div class="card-body">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <input type="hidden" name="worker_id" id="worker_id"
                                             value={{ isset($worker) ? $worker->id : '' }}>
                                         <div class="form-group">
@@ -87,7 +87,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="branch">Branch</label>
                                             <select name="branch_id" id="branch" class='form-control' required>
@@ -107,7 +107,7 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
                                             <input type="text" name='name' class="form-control" id="name"
@@ -115,7 +115,7 @@
                                                 aria-describedby="emailHelp" placeholder="Enter Name" required>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="address">Address</label>
                                             <textarea class="form-control" name="address" id="address" aria-describedby="address" required>{{ isset($worker) ? $worker->address : '' }}</textarea>
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="mobile">Mobile</label>
                                             <input type="number" name='mobile' class="form-control" id="mobile"
@@ -132,18 +132,18 @@
                                                 minlength="10" title="Enter Valid Mobile No">
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="emailid">Email ID</label>
                                             <input type="email" name='email' class="form-control" id="emailid"
                                                 value="{{ isset($worker) ? $worker->email : '' }}"
-                                                aria-describedby="emailHelp" placeholder="Enter email" required>
+                                                aria-describedby="emailHelp" placeholder="Enter email" >
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="dob">Date of birth</label>
                                             <input type="date" name='dob' class="form-control" id="dob"
@@ -151,7 +151,7 @@
                                                 min="1900-01-01" max="{{ date('Y-m-d') }}">
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="gender">Gender</label>
 
@@ -172,25 +172,24 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="labour_classification">Labour Classification</label>
 
-                                            <select name='labour_classification' class="form-control"
-                                                id='labour_classification' required>
+                                            
+                                            <select name='labour_classification' class="form-control" id='labour_classification'
+                                                required>
                                                 <option value="">Select Type</option>
-                                                <option
-                                                    {{ isset($worker) ? ('local' == $worker->labour_classification ? 'Selected' : '') : '' }}
-                                                    value="local">Local
-                                                </option>
-                                                <option
-                                                    {{ isset($worker) ? ('others' == $worker->labour_classification ? 'Selected' : '') : '' }}
-                                                    value="others">Others
-                                                </option>
+                                                @foreach ($labourClassification as $labour)
+                                                    <option
+                                                        {{ isset($worker) ? ($labour->Category_ID == $worker->labour_classification ? 'Selected' : '') : '' }}
+                                                        value="{{ $labour->Category_ID }}">
+                                                        {{ $labour->Category_Name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="contarctor">Contractor</label>
 
@@ -210,7 +209,7 @@
 
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="mesthiry">Mesthiry</label>
                                             <select name="mesthiry_id" id="mesthiry" class="form-control" required>
@@ -224,7 +223,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="work_unit">Work Unit</label>
                                             <select name="work_unit" id="workunit" class="form-control" required>
@@ -242,7 +241,7 @@
                                 </div>
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="remarks">Remarks</label>
                                             <textarea class="form-control" name="remarks" id="remarks" aria-describedby="remarks">{{ isset($worker) ? $worker->remarks : '' }}  </textarea>
@@ -255,7 +254,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header bg-info ">
                                 Bank Details
@@ -263,7 +262,7 @@
                             <div class="card-body">
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="id_proof">Id Proof Type</label>
 
@@ -287,7 +286,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="idpn">Id Proof Number</label>
                                             <input type="text" name='id_proof_number' class="form-control"
@@ -298,7 +297,7 @@
                                 </div>
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bano">Bank Account Number</label>
                                             <input type="number" name='bank_account_no' class="form-control"
@@ -307,7 +306,7 @@
                                                 placeholder="Enter Bank Account Number" required>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bahn">Bank Account Holder Name</label>
                                             <input type="text" name='bank_account_holder_name'
@@ -319,7 +318,7 @@
                                 </div>
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="ifsc">IFSC Code</label>
                                             <input type="text" name='ifsc' id="ifscinput"
@@ -329,7 +328,7 @@
                                                 placeholder="Enter IFSC Code" required>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bankname">Bank Name </label>
                                             <input type="text" name='bank_name' class="form-control"
@@ -340,7 +339,7 @@
                                 </div>
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bank_branch_name">Bank Branch Name</label>
                                             <input type="text" name='bank_branch_name' class="form-control"
@@ -448,7 +447,7 @@
 
         var formData = new FormData($("#addeditform")[0]);
         var url = $("#addeditform").attr('action');
-        $('#formSubmitBtn').prop('disabled', true);
+        //$('#formSubmitBtn').prop('disabled', true);
         $.ajax({
             type: 'POST',
             processData: false,

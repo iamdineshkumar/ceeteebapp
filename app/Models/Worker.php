@@ -16,6 +16,10 @@ class Worker extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'Branch_ID');
     }
+    public function labour()
+    {
+        return $this->belongsTo(Contractor_Category::class, 'labour_classification', 'Category_ID');
+    }
     public function contractor()
     {
         return $this->belongsTo(ContractorMaster::class);
