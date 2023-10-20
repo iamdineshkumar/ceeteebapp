@@ -61,7 +61,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="company">Company</label>
                         <select name="company_id" id="company" class="form-control" required disabled>
@@ -71,7 +71,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="branch">Branch</label>
                         <select name="branch_id" id="branch" class='form-control' required disabled>
@@ -81,7 +81,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" name='name' class="form-control" id="name"
@@ -89,20 +89,20 @@
                             required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="address">Address</label>
                         <textarea class="form-control" name="address" id="address" aria-describedby="address" required disabled>{{ $worker_docs[0]->address }}</textarea>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="mobile">Mobile</label>
                         <input type="number" name='mobile' class="form-control" id="mobile"
                             value="{{ $worker_docs[0]->mobile }}" placeholder="Enter Mobile number" required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="emailid">Email ID</label>
                         <input type="email" name='email' class="form-control" id="emailid"
@@ -111,14 +111,14 @@
 
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="dob">Date of birth</label>
                         <input type="date" name='dob' class="form-control" id="dob"
                             value="{{ $worker_docs[0]->dob }}" required disabled min="1900-01-01" max="2023-10-03">
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="gender">Gender</label>
                         <select name='gender' class="form-control" id='gender' required disabled>
@@ -132,7 +132,7 @@
                     </div>
 
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="id_proof">Id Proof Type</label>
                         <select name='id_proof_type' class="form-control" id='id_proof' required disabled>
@@ -149,7 +149,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="idpn">Id Proof Number</label>
                         <input type="text" name='id_proof_number' class="form-control"
@@ -157,7 +157,7 @@
                             placeholder="Enter Id Proof Number" required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="labour_classification">Labour Classification</label>
 
@@ -168,7 +168,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="bano">Bank Account Number</label>
                         <input type="text" name='bank_account_no' class="form-control" id="bank_account_no"
@@ -176,7 +176,7 @@
                             required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="bahn">Bank Account Holder Name</label>
                         <input type="text" name='bank_account_holder_name' class="form-control"
@@ -184,14 +184,14 @@
                             placeholder="Enter Bank Account Holder Name" required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="ifsc">IFSC Code</label>
                         <input type="text" name='ifsc' class="form-control" id="ifsc"
                             value="{{ $worker_docs[0]->ifsc }}" placeholder="Enter IFSC Code" required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="bankname">Bank Name </label>
                         <input type="text" name='bank_name' class="form-control"
@@ -199,7 +199,7 @@
                             required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="bank_branch_name">Bank Branch Name</label>
                         <input type="text" name='bank_branch_name' class="form-control"
@@ -207,7 +207,7 @@
                             placeholder="Enter Bank Branch Name" required disabled>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="contarctor">Contractor</label>
 
@@ -220,7 +220,7 @@
                     </div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="mesthiry">Mesthiry</label>
                         <select name="mesthiry_id" id="mesthiry" class="form-control" required disabled>
@@ -232,7 +232,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="work_unit">Work Unit</label>
                         <select name="work_unit" id="workunit" class="form-control" required disabled>
@@ -246,7 +246,7 @@
 
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="remarks">Remarks</label>
                         <textarea class="form-control" name="remarks" id="remarks" aria-describedby="remarks" disabled>{{ $worker_docs[0]->remarks }}   </textarea>
@@ -259,14 +259,14 @@
                 @csrf
                 <input type="hidden" name='worker_id' value="{{ $worker_docs[0]->id }}">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <input class="form-control" type="file" name="documents[]" id="documents" required
                                 accept=".doc,.docx,.pdf,.txt,.mp3,.mp4,.png,.jpeg,.xlsx,.m4a,.wav,.wma,.avi,.jpg"
                                 multiple>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <button class="btn btn-info btn-sm float-left" type="submit">Save </button>
                         </div>

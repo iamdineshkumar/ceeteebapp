@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->Integer('company_id')->unsigned();
             $table->foreign('company_id')->references('Company_ID')->on('company_mgmt')->onDelete('cascade');
-            $table->string('branch_id')->unsigned();
+            $table->string('branch_id');
             $table->foreign('branch_id')->references('Branch_ID')->on('branch_mgmt')->onDelete('cascade');
             $table->string('name', 100);
             $table->text('address');
