@@ -31,9 +31,9 @@
                     @elseif($worker->status == 2)
                         Cancelled
                     @elseif($worker->status == 3)
-                        OnHold
-                    @elseif($worker->status == 4)
                         Approved
+                    @elseif($worker->status == 4)
+                        OnHold
                     @endif
                 </td>
                 <td>
@@ -50,7 +50,6 @@
                             class="fas fa-pencil-alt"></i></a>
                     <a href="{{ url('worker-view/' . $worker->id) }}" class="btn btn-success btn-sm"><i
                             class="fas fa-eye"></i></a>
-
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteWorker({{ $worker->id }})"><i
                             class="fas fa-trash"></i></button>
 

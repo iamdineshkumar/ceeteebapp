@@ -242,9 +242,34 @@
                                     value="{{ $workunit['id'] }}">{{ $workunit['name'] }}</option>
                             @endforeach
                         </select>
-
-
                     </div>
+                </div>
+               
+                <div class="col-md-3">
+                   
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <button type="button" class="btn btn-info btn-sm float-right" title="Update" onclick="statusChange({{ $worker_docs[0]->id }})"><i
+                            class="fas fa-pencil-alt"></i></button>
+                        <select name="status" id="workunit" class="form-control" required disabled>
+                        
+                                <option value=1 {{ $worker_docs[0]->status == 1 ? 'Selected' : '' }}>
+                                    Open</option>
+                                <option {{ $worker_docs[0]->status == 2 ? 'Selected' : '' }}
+                                    value=2>
+                                     Cancelled
+                                </option>
+                                <option {{ $worker_docs[0]->status == 3 ? 'Selected' : '' }}
+                                    value=3>Approved
+                                </option>
+                                <option {{ $worker_docs[0]->status == 4 ? 'Selected' : '' }}
+                                    value=4>Hold
+                                </option>
+
+                        </select>
+                        
+                    </div>
+                   
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
@@ -278,7 +303,6 @@
 
 
             <div id="docslist">
-
                 <br> <br>
                 <table id="docsTable" class="table table-bordered table-responsive"
                     style="margin-left: auto; 
@@ -401,6 +425,57 @@
             "autoWidth": false,
         });
     });
+    function statusChange(workerId) {
+        var type = "Worker";
+        var caste = $('#commonModalContent');
+        caste.empty();
+        $.ajax({
+            url: "{{ url('status-worker') }}/" + workerId,
+            type: 'GET',
+            success: function(response) {
+                caste.html(response);
+                $('#commonModalLabel').text("Status Change " + type);
+                $('#commonModal').modal('show');
+            }
+        })
+    }
+    $(document).on('click', '#commonModalSubmitBtn', function() {
+            if (!$("#commonModalForm")[0].checkValidity()) {
+                $("#commonModalForm").find("#submit-hidden").click();
+                return;
+            }
+            var formData = new FormData($("#commonModalForm")[0]);
+            var url = $("#commonModalForm").attr('action');
+            $('#commonModalSubmitBtn').prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                url: url,
+                async: true,
+                data: formData,
+                success: function(response) {
+                    if (response.status == 1) {
+                        toastr.success(response.message, 'Success');
+                        $("#commonModalForm").attr('action', '');
+                        $("#commonModal").modal('hide');
+                        $('#commonModalSubmitBtn').prop('disabled', false);
+                        if (response.callFunction) {
+                            eval(response.callFunction);
+                        }
+                        location.reload();
+                    } else {
+                        for (let x in response.message) {
+                            text = response.message[x];
+                            toastr.error(text, 'Error');
+                        }
+
+                        $('#commonModalSubmitBtn').prop('disabled', false);
+                    }
+                }
+            });
+        });
+
 </script>
 @if (session()->has('message'))
     <script>

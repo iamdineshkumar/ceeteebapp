@@ -205,7 +205,7 @@
 
                             <p>
 
-                                {{-- {{ session('user')['UserName']}} - {{ session('user')['UserRole']}} --}}
+                                {{ session('user')['UserName']}} - {{ session('user')['UserRole']}}
 
                             </p>
                         </li>
@@ -383,7 +383,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ URL::asset('workers') }}"
-                                        @if (Request::segment(2) == 'User Management') class="nav-link active" @else class="nav-link " @endif>
+                                        @if (Request::segment(2) == 'Worker Management') class="nav-link active" @else class="nav-link " @endif>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>
                                             Worker Management
@@ -391,11 +391,25 @@
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::asset('worker-attendance') }}" @if (Request::segment(2) == 'Attendance') class="nav-link active" @else class="nav-link " @endif>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> Worker Attendance Approval</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ URL::asset('attendance-report-worker') }}" @if (Request::segment(2) == 'Attendance Report') class="nav-link active" @else class="nav-link " @endif>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> worker Attendance Report</p>
+                                    </a>
+                                </li>
+                                
                                 {{-- @endif --}}
                             </ul>
                         </li>
                         {{-- @endif --}}
                         {{-- @if (session('user')['UserRole'] == 'Admin' || session()->has('CRM')) --}}
+                       
                         <li class="nav-item">
                             <a href="{{ URL::asset('Crm') }}"
                                 @if (Request::segment(1) == 'Crm') class="nav-link active" @else class="nav-link " @endif>
@@ -855,6 +869,15 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if (session('user')['UserRole'] == 'Admin' )
+                                <li class="nav-item">
+                                    <a href="{{ URL::asset('Reports/attendance-report') }}"
+                                         class="nav-link " >
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Attendance Report</p>
+                                    </a>
+                                </li>
+                            @endif
                             </ul>
                         </li>
                         @endif

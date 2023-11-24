@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,37 +41,19 @@
 
 </head>
 
-@include('../header')
+@include('workers/header')
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Worker Management</h1>
+                    <h1>Dashboard</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Home</li>
-                        <li class="breadcrumb-item active">Worker Management</li>
-                    </ol>
-                </div>
+                
             </div>
         </div><!-- /.container-fluid -->
     </section>
-    <div class="card">
-        <br>
-        <div class="container">
-            <a href="{{ url('add-worker') }}" class="btn btn-primary btn-sm float-right "><i
-                    class="fas fa-sm fa-plus"></i> New Worker</a>
-            <br><br>
-            <div id="workersTable">
-
-            </div>
-
-        </div>
-        <br>
-
-    </div>
+   
 </div>
 <!-- jQuery -->
 <script src="{{ URL::asset('plugins/jquery/jquery.min.js') }}"></script>
@@ -99,40 +80,18 @@
 <script src="{{ URL::asset('plugins/toastr/toastr.min.js') }}"></script>
 <!-- Page specific script -->
 <script>
-    function fetchWorkerList() {
-        var caste = $('#workersTable');
-        caste.empty();
-        $.ajax({
-            url: "{{ url('worker-list') }}",
-            type: 'GET',
-            success: function(response) {
-                caste.html(response);
-                $("#workersDataTable").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                }).buttons().container().appendTo('#workersDataTable_wrapper .col-md-6:eq(0)');
-            }
-        })
-    }
-
-    $(document).ready(function() {
-        $(function() {
-            fetchWorkerList();
-        });
-    });
+   
 </script>
-@if (session()->has('message'))
+
+@if (!empty($message))
     <script>
-        toastr.success("{{ session()->get('message') }}", 'Success')
+        toastr.success("{{ $message }}", 'Success')
     </script>
 @endif
 @if ($errors->any())
-    @foreach ($errors as $error)
-        <script>
-            toastr.error('{{ $error->message }}', 'Error')
-        </script>
-    @endforeach
+<script>
+toastr.error("{{$errors->first()}}")
+</script>
 @endif
-@include('../footer')
+
+@include('workers/footer')

@@ -490,6 +490,21 @@ return [
                 ],
             ],
         ],
+        'Stepper' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper@1.7.0/dist/css/bs-stepper.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper@1.7.0/dist/js/bs-stepper.min.js',
+                ],
+            ],
+        ],
         'Pace' => [
             'active' => false,
             'files' => [

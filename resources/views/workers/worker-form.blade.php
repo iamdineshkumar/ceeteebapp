@@ -126,8 +126,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="mobile">Mobile</label>
-                                            <input type="number" name='mobile' class="form-control" id="mobile"
-                                                value="{{ isset($worker) ? $worker->mobile : '' }}"
+                                            <input type="text" name='mobile' class="form-control" id="mobile"
+                                            pattern="(6|7|8|9)\d{9}" value="{{ isset($worker) ? $worker->mobile : '' }}"
                                                 placeholder="Enter Mobile number" required maxlength="10"
                                                 minlength="10" title="Enter Valid Mobile No">
                                         </div>

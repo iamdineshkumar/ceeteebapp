@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Chathamkulam | Worker Management</title>
+    <title>Chathamkulam | Worker Attendance Approval</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -42,18 +42,18 @@
 
 </head>
 
-@include('../header')
+@include('header')
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Worker Management</h1>
+                    <h1>Worker Attendance  Approval</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item active">Home</li>
-                        <li class="breadcrumb-item active">Worker Management</li>
+                        <li class="breadcrumb-item active">Worker Attendance Approval</li>
                     </ol>
                 </div>
             </div>
@@ -62,12 +62,39 @@
     <div class="card">
         <br>
         <div class="container">
-            <a href="{{ url('add-worker') }}" class="btn btn-primary btn-sm float-right "><i
-                    class="fas fa-sm fa-plus"></i> New Worker</a>
-            <br><br>
-            <div id="workersTable">
-
-            </div>
+          
+                <table id="workersDataTable" class="table table-bordered table-responsive" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width:3%">#</th>
+                            <th style="width:12%">Name</th>
+                            <th style="width:12%">Date</th>
+                            <th style="width:12%">Login Time</th>
+                            <th style="width:12%">Logout Time</th>
+                            <th style="width:12%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                
+                        @foreach ($attendance as $key => $att)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $att->user->username}}</td>
+                                <td>{{date("d-m-Y", strtotime($att->date));}}</td>
+                                <td>{{date("d-m-Y h:i A", strtotime($att->login_time));}}</td>
+                                <td>{{date("d-m-Y h:i A", strtotime($att->logout_time));}}</td>
+                                <td style="width:15%; ">
+                                    @if ( isset($att->latitude) && isset($att->longitude))
+                                        <a href="{{'http://maps.google.com/?q='.$att->latitude.','.$att->longitude}}" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-map-marked-alt"></i></a>
+                                    @endif
+                                    <a href="{{ url('attendance-view/' . $att->id) }}" class="btn btn-success btn-sm"><i
+                                       class="fas fa-pencil-alt"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            
 
         </div>
         <br>
@@ -99,29 +126,13 @@
 <script src="{{ URL::asset('plugins/toastr/toastr.min.js') }}"></script>
 <!-- Page specific script -->
 <script>
-    function fetchWorkerList() {
-        var caste = $('#workersTable');
-        caste.empty();
-        $.ajax({
-            url: "{{ url('worker-list') }}",
-            type: 'GET',
-            success: function(response) {
-                caste.html(response);
-                $("#workersDataTable").DataTable({
+
+    $("#workersDataTable").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 }).buttons().container().appendTo('#workersDataTable_wrapper .col-md-6:eq(0)');
-            }
-        })
-    }
-
-    $(document).ready(function() {
-        $(function() {
-            fetchWorkerList();
-        });
-    });
 </script>
 @if (session()->has('message'))
     <script>
@@ -135,4 +146,4 @@
         </script>
     @endforeach
 @endif
-@include('../footer')
+@include('footer')

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->Integer('workerId')->unsigned();
             $table->foreign('workerId')->references('id')->on('workers')->onDelete('cascade');
             $table->timestamp('date')->useCurrent();
-            $table->string('doc_name',30)->nullable()->default('NULL');
-            $table->string('doc_type',30)->nullable()->default('NULL');
-            $table->string('doc_location',30)->nullable()->default('NULL');
+            $table->string('doc_name',255)->nullable()->default('NULL');
+            $table->string('doc_type',255)->nullable()->default('NULL');
+            $table->string('doc_location',255)->nullable()->default('NULL');
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Chathamkulam | Worker Management</title>
+    <title>Chathamkulam |  Attendance Report</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -35,40 +35,93 @@
     <link rel="stylesheet" href="{{ URL::asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- daterange picker -->
-    <link rel="stylesheet" href="{{ URL::asset('plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('customized/customized.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ URL::asset('plugins/toastr/toastr.min.css') }}">
 
 </head>
-
-@include('../header')
+ @include('workers/header')
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Worker Management</h1>
+                    <h1> Attendance Report</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item active">Home</li>
-                        <li class="breadcrumb-item active">Worker Management</li>
+                        <li class="breadcrumb-item active"> Attendance Report</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
+   
     <div class="card">
         <br>
         <div class="container">
-            <a href="{{ url('add-worker') }}" class="btn btn-primary btn-sm float-right "><i
-                    class="fas fa-sm fa-plus"></i> New Worker</a>
-            <br><br>
-            <div id="workersTable">
-
-            </div>
-
+            <form action="{{url('attendance-report')}}" id="main-form" method="POST">
+                @csrf
+                <div class="row" id="form-wrapper">
+                    
+                    <div class="form-group col-lg-4 col-md-6">
+                        <label class="col-lg-4" for="from_date" style="display:inline-block; text-align:left; ">From</label>
+                        <input class="form-control col-lg-7" type="date" id="from_date" name="from" value="{{ isset($data['from'])? date('d-m-Y',strtotime($data['from'])):'' }}" style="display:inline-block" required/>
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6">
+                        <label for="to_date" class="col-lg-4" style="display:inline-block;  text-align:left;">To</label>
+                        <input class="form-control col-lg-7" type="date" id="to_date" name="to" value="{{ isset($data['to'])? date('d-m-Y',strtotime($data['to'])):'' }}" style="display:inline-block" required />
+                    </div>
+                    
+                    <div class="form-group" >
+                        <button type="submit" class="btn btn-secondary float-right" type="button">Generate</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+          @if(!empty($attendance))
+                <table id="workersDataTable" class="table table-bordered table-responsive" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width:3%">#</th>
+                            <th style="width:12%">Date</th>
+                            <th style="width:12%">Name</th>
+                            <th style="width:12%">Contractor</th>
+                            <th style="width:12%">Unit</th>
+                            <th style="width:12%">Work Type</th>
+                            <th style="width:12%">Login Time</th>
+                            <th style="width:12%">Logout Time</th>
+                            <th style="width:12%">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                
+                        @foreach ($attendance as $key => $att)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{date("d-m-Y", strtotime($att->date));}}</td>
+                                <td>{{ $att->user->username}}</td>
+                                <td>{{ $att->contractor->Contractor_Name}}</td>
+                                <td>{{ $att->units->Product_Villa }}</td>
+                                <td>{{ $att->work_types->Category_Name }}</td>
+                                <td>{{date("d-m-Y h:i A", strtotime($att->login_time));}}</td>
+                                <td>{{date("d-m-Y h:i A", strtotime($att->logout_time));}}</td>
+                                <td>
+                                    @if ($att->status == 1)
+                                        Open
+                                    @elseif($att->status == 2)
+                                        Cancelled
+                                    @elseif($att->status == 3)
+                                        Approved
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            
+@endif
         </div>
         <br>
 
@@ -91,6 +144,7 @@
 <script src="{{ URL::asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
@@ -99,29 +153,12 @@
 <script src="{{ URL::asset('plugins/toastr/toastr.min.js') }}"></script>
 <!-- Page specific script -->
 <script>
-    function fetchWorkerList() {
-        var caste = $('#workersTable');
-        caste.empty();
-        $.ajax({
-            url: "{{ url('worker-list') }}",
-            type: 'GET',
-            success: function(response) {
-                caste.html(response);
-                $("#workersDataTable").DataTable({
+ $("#workersDataTable").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 }).buttons().container().appendTo('#workersDataTable_wrapper .col-md-6:eq(0)');
-            }
-        })
-    }
-
-    $(document).ready(function() {
-        $(function() {
-            fetchWorkerList();
-        });
-    });
 </script>
 @if (session()->has('message'))
     <script>
@@ -135,4 +172,4 @@
         </script>
     @endforeach
 @endif
-@include('../footer')
+@include('workers/footer')

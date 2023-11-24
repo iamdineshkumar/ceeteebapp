@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Chathamkulam | Worker Management</title>
+    <title>Chathamkulam | Change Password</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -42,37 +42,72 @@
 
 </head>
 
-@include('../header')
+@include('workers/header')
 <div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Worker Management</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Home</li>
-                        <li class="breadcrumb-item active">Worker Management</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <div class="card">
-        <br>
-        <div class="container">
-            <a href="{{ url('add-worker') }}" class="btn btn-primary btn-sm float-right "><i
-                    class="fas fa-sm fa-plus"></i> New Worker</a>
-            <br><br>
-            <div id="workersTable">
 
-            </div>
 
+  <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1> Change Password</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Home</li>
+                    <li class="breadcrumb-item active"> Change Password</li>
+                </ol>
+            </div>
         </div>
-        <br>
+    </div><!-- /.container-fluid -->
+</section>
 
+<div class="card ">
+  <div class="container">
+    <div class="card-body"> 
+<form action="{{ url('update-password') }}" method="post">
+    @csrf
+   <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="input-group mb-3">
+      <input type="text" name="password" id="password" class="form-control" maxlength="20" minlength="8" placeholder="New Password" required>
+      <div class="input-group-append">
+      <div class="input-group-text">
+      <span class="fas fa-lock"></span>
+      </div>
+      </div>
     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6 mx-auto">
+    <div class="input-group mb-3">
+    <input type="password" name="confirm_password"  id="confirm_password" class="form-control"  placeholder="Confirm Password" required>
+    <div class="input-group-append">
+    <div class="input-group-text">
+    <span class="fas fa-lock"></span>
+    </div>
+    </div>
+    </div>
+  </div>
+   </div>
+<div class="row">
+
+
+<div class="col-12">
+<button type="submit" class="btn btn-primary btn-sm float-right">Save Changes</button>
+</div>
+
+</div>
+</form>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
 </div>
 <!-- jQuery -->
 <script src="{{ URL::asset('plugins/jquery/jquery.min.js') }}"></script>
@@ -82,7 +117,7 @@
 <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
 <!--<script src="{{ URL::asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>-->
+  <script src="{{ URL::asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>-->
 <script src="{{ URL::asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/jszip/jszip.min.js') }}"></script>
@@ -97,42 +132,28 @@
 <script src="{{ URL::asset('dist/js/demo.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ URL::asset('plugins/toastr/toastr.min.js') }}"></script>
-<!-- Page specific script -->
 <script>
-    function fetchWorkerList() {
-        var caste = $('#workersTable');
-        caste.empty();
-        $.ajax({
-            url: "{{ url('worker-list') }}",
-            type: 'GET',
-            success: function(response) {
-                caste.html(response);
-                $("#workersDataTable").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                }).buttons().container().appendTo('#workersDataTable_wrapper .col-md-6:eq(0)');
-            }
-        })
-    }
+var password = document.getElementById("password")
+  , confirm_password = document.getElementById("confirm_password");
 
-    $(document).ready(function() {
-        $(function() {
-            fetchWorkerList();
-        });
-    });
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
 </script>
 @if (session()->has('message'))
     <script>
-        toastr.success("{{ session()->get('message') }}", 'Success')
+        toastr.success("{{ session()->get('message') }}")
     </script>
 @endif
 @if ($errors->any())
-    @foreach ($errors as $error)
-        <script>
-            toastr.error('{{ $error->message }}', 'Error')
-        </script>
-    @endforeach
+<script>
+toastr.error("{{$errors->first()}}")
+</script>
 @endif
-@include('../footer')
