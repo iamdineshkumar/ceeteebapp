@@ -29,13 +29,13 @@
 <img src="{{ URL::asset('dist/img/ceetee logo1.png') }}" alt="CEETEE Logo" class="brand-image img-circle elevation-3" style="opacity: .8; width:100px" >
 </div>
 
-<h5>Welcome To Chathamkulam Digital Platform For Project Management Consultancy (CDPPMC) </h5>
+<h5>Welcome To Chathamkulam Digital Platform - Worker Portol (CDPWP) </h5>
 
 <div Class="container">
 <div Class="main">
 
 <div class="form-img">
-<img src="{{ URL::asset('dist/img/ckm_builders4.jpg') }}" alt="CEETEE Logo" class="" >
+<img src="{{ URL::asset('dist/img/ckm_builders3.jpg') }}" alt="CEETEE Logo" class="" >
 </div>
 <div Class="content">
 
